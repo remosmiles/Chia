@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remo Tresch | Special Access</title>
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff00ff;
+            --neon-gold: #d4af37;
+            --dark-bg: #0a0a0a;
+        }
+
+        body, html {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #matrix-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.15;
+        }
+
+        /* --- LOGIN SCREEN --- */
+        #login-screen {
+            z-index: 10;
+            text-align: center;
+            border: 2px solid var(--neon-pink);
+            padding: 40px;
+            background: rgba(0,0,0,0.9);
+            box-shadow: 0 0 20px var(--neon-pink);
+            border-radius: 15px;
+        }
+
+        input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-size: 1.5rem;
+            text-align: center;
+            outline: none;
+            padding: 10px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        /* --- CONTENT SCREEN --- */
+        #content-screen {
+            display: none;
+            z-index: 10;
+            max-width: 800px;
+            padding: 40px;
+            text-align: left;
+            background: rgba(0,0,0,0.85);
+            border-left: 3px solid var(--neon-blue);
+            animation: fadeIn 1.5s ease-in;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        h1 { color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); }
+        .heart { color: var(--neon-pink); font-size: 1.5rem; }
+
+        .appreciation-text {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        .promo-box {
+            margin-top: 40px;
+            text-align: center;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+
+        .bullenpower-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .bullenpower-btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+
+<div id="login-screen">
+    <h2 style="color: var(--neon-blue);">ZUGANGSPRÜFUNG KOMMANDO</h2>
+    <p>Sicherheitsfrage:</p>
+    <p style="font-style: italic; color: var(--neon-pink);">"Was hat Chiara am liebsten?"</p>
+    <input type="text" id="chiaraAnswer" placeholder="..." autofocus autocomplete="off">
+    <p style="font-size: 0.7rem; margin-top: 20px; opacity: 0.5;">Tipp: Es fängt mit 'G' an...</p>
+</div>
+
+<div id="content-screen">
+    <h1>Für Chiara <span class="heart">♥</span></h1>
+    <div class="appreciation-text">
+        <p>> INITIALISERE WERTSCHÄTZUNGS-PROTOKOLL...</p>
+        <p>
+            Manchmal gibt es Begegnungen im Berufsalltag, die weit über das rein Dienstliche hinausgehen. 
+            Seit ich im Kommando arbeite, ist die Zusammenarbeit mit dir, Chiara, zu einem echten Highlight 
+            meines Schichtbetriebs geworden.
+        </p>
+        <p>
+            Ich möchte diese Gelegenheit nutzen, um dir einfach mal <strong>DANKE</strong> zu sagen. 
+            Danke für deine Art, danke für die unzähligen Momente, in denen ein kleiner Austausch oder 
+            der neuste "Gossip" den Tag aufgelockert hat. Es ist selten, dass man jemanden so schnell 
+            ins Herz schliesst, aber deine Präsenz macht die Arbeit hier im SVZ zu etwas Besonderem.
+        </p>
+        <p>
+            Ich schätze unsere Zusammenarbeit enorm und freue mich auf alles, was noch kommt – 
+            auf eine spannende, tolle und weiterhin so herzliche Zukunft hier bei uns. 
+            Schön, dich im Team zu haben!
+        </p>
+        <p>> ENDE DER NACHRICHT. BLEIB GENAU SO WIE DU BIST.</p>
+    </div>
+
+    <div class="promo-box">
+        <p style="margin-bottom: 20px; color: var(--neon-gold);">WEITER ZU MEINER MISSION:</p>
+        <a href="https://www.bullenpower-uri.ch" target="_blank" class="bullenpower-btn">Bullenpower-uri.ch</a>
+    </div>
+</div>
+
+<script>
+    // MATRIX EFFEKT
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const chars = "01010101GOSSIPCHIARAREMO";
+    const drops = Array(Math.floor(canvas.width / 16)).fill(1);
+
+    function draw() {
+        ctx.fillStyle = "rgba(10, 10, 10, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#00f2ff";
+        ctx.font = "16px monospace";
+        drops.forEach((y, i) => {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * 16, y * 16);
+            if (y * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        });
+    }
+    setInterval(draw, 50);
+
+    // LOGIN CHECK
+    const input = document.getElementById('chiaraAnswer');
+    const login = document.getElementById('login-screen');
+    const content = document.getElementById('content-screen');
+
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            if (input.value.toLowerCase().trim() === 'gossip') {
+                login.style.display = 'none';
+                content.style.display = 'block';
+                document.body.style.overflow = 'auto';
+            } else {
+                input.style.borderBottom = '2px solid red';
+                setTimeout(() => input.style.borderBottom = '2px solid var(--neon-blue)', 500);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
